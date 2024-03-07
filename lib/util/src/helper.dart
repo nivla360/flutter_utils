@@ -90,6 +90,22 @@ copyText(String text) async {
   }
 }
 
+bool textIsNumeric(String? s, {bool isDouble = false, String? ignoreChar}) {
+  if (s == null || s.isEmpty) {
+    return false;
+  }
+  if (ignoreChar != null) {
+    s = s.replaceAll(ignoreChar, '');
+  }
+  try {
+    return isDouble
+        ? double.tryParse(s) != null && !s.contains('-')
+        : int.tryParse(s) != null && !s.contains('-');
+  } catch (e) {
+    return false;
+  }
+}
+
 void openUrl(Uri uri) async {
   if (!await launchUrl(uri)) showErrorToast('Sorry, unable to load page');
 }

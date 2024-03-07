@@ -1,7 +1,63 @@
+import 'package:example/base_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_utils/app_flavor/app_flavor.dart';
+import 'package:flutter_utils/extensions/extensions.dart';
+import 'package:flutter_utils/flutter_utils.dart';
+import 'package:flutter_utils/widgets/widgets.dart';
 
-void main() {
+import 'app_route.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initServices();
   runApp(const MyApp());
+}
+
+Future initServices() async {
+  getIt.registerSingleton(HomeController());
+  AppFlavor().init(AppFlavors.development);
+  FlutterUtil.initialize(
+      loaderSmall: const SpinKitCircle(color: Colors.blue),
+      loaderMedium: const SpinKitCircle(color: Colors.blue),
+      loaderLarge: const SpinKitCircle(color: Colors.blue,),
+      imagesError: "assets/images/empty.png",
+      imagesNoInternet: "assets/images/empty.png",
+      imagesNoResults: "assets/images/empty.png",
+      imagesSuccess: "assets/images/empty.png",
+  );
+  await Future.delayed(const Duration(milliseconds: 10));
+}
+
+class HomeController extends BaseController{
+  int _counter = 0;
+  String _title = "Hello";
+
+  String get title => _title;
+  int get counter => _counter;
+
+  set title(String newTitle){
+    _title = newTitle;
+    notifyListeners();
+  }
+
+  set counter(int counter){
+    _counter = counter;
+    notifyListeners();
+  }
+
+  showDialog(){
+    getContext()?.showSimpleCustomDialog(title: 'title', description: 'description');
+  }
+
+  nextPage(){
+    getContext()?.goNamed(AppRoute.secondPage);
+  }
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -10,116 +66,83 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return ScreenUtilInit(
+        designSize: ScreenUtil.defaultSize,
+        builder:  (context,child) => MaterialApp.router(
       title: 'Flutter Demo',
+          routerConfig: AppRoute.router,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        appBarTheme: AppBarTheme(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
+        // titleTextStyle: TextStyle(fontFamily: fontBreeSerif,color: Colors.black, fontSize: 28, fontWeight: FontWeight.w900)),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.white,
+            // navigation bar color
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark),
+        titleTextStyle: GoogleFonts.montserrat(
+            color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w800),
+      ),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+          builder: (context,widget)=>FlavorBanner(child: widget ?? Container()),
+    ));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+class MyHomePage extends StatelessView<HomeController> {
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
+    return  StyledToast(
+        backgroundColor: Colors.blue,
+        borderRadius: BorderRadius.circular(30),
+    toastAnimation: StyledToastAnimation.slideFromTop,
+    toastPositions: StyledToastPosition.top,
+    duration: const Duration(milliseconds: 4000),
+    locale: const Locale('en', 'US'),
+    child: Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(controller.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
+            CustomTextButton(onTap: (){}, label: "Primary",icon: Ionicons.person,),
+            CustomTextButton.secondary(onTap: (){}, label: "Secondary",icon: Ionicons.chatbox),
+            CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
+            CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
+
+            ReactiveWidget<HomeController>(builder: (context,controller)=>Text(
+              '${controller.counter}',
               style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            )),
           ],
-        ),
+        ).paddingAll(16),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: (){
+          // controller.showDialog();
+          // context.showSuccessDialog(title: "Simple");
+          context.showNoInternetDialog();
+        },//()=>controller.counter++,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    ));
   }
 }

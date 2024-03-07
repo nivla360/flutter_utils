@@ -44,9 +44,16 @@ logInfo(data){
     logger.i(data);
   }
 }
+
 showErrorToast(String message) {
   showToast(message,
       backgroundColor: Colors.red,
+      duration: const Duration(milliseconds: 5000));
+}
+
+showSuccessToast(String message) {
+  showToast(message,
+      backgroundColor: Colors.green,
       duration: const Duration(milliseconds: 5000));
 }
 

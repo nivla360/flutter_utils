@@ -9,7 +9,7 @@ class AppFlavor {
   AppFlavors flavor = AppFlavors.production;
   static final AppFlavor _appFlavor = AppFlavor._internal();
 
-  bool get isDev => flavor == AppFlavors.development;
+  bool get isDevelopment => flavor == AppFlavors.development;
   bool get isProduction => flavor == AppFlavors.production;
   bool get isStaging => flavor == AppFlavors.staging;
 

@@ -11,8 +11,8 @@ class FlavorBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final instance = AppFlavor.instance;
     return instance.isProduction ? child : Banner(
-      color: instance.isDev ? Colors.red : Colors.green,
-      message: instance.isDev ? 'DEV' : 'STAGING',
+      color: instance.isDevelopment ? Colors.red : Colors.green,
+      message: instance.isDevelopment ? 'DEV' : 'STAGING',
       location: BannerLocation.topStart,
       child: child,
     );

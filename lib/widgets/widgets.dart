@@ -8,3 +8,4 @@ export './src/platform_image_asset.dart';
 export './src/load_more.dart';
 export './src/custom_text_button.dart';
 export './src/flavor_banner.dart';
+export './src/parallax_carousel.dart';

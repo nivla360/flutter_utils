@@ -136,8 +136,9 @@ class MyHomePage extends StatelessView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           // controller.showDialog();
-          context.showSuccessDialog(title: "Simple");
+          // context.showSuccessDialog(title: "Simple");
           // context.showNoInternetDialog();
+          context.go('dfdfdf');
         },//()=>controller.counter++,
         tooltip: 'Increment',
         child: const Icon(Icons.add),

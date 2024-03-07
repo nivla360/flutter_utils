@@ -10,7 +10,7 @@ class AppRoute {
 
   static final GoRouter router = GoRouter(
       debugLogDiagnostics: true,
-      errorBuilder: (context, state) => const NotFoundPage(), //TODO: test this and work on when the button is clicked to go home
+      errorBuilder: (context, state) => const NotFoundPage(),
       routes: [
         GoRoute(
             path: initialRoute,

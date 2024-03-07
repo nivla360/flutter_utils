@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_utils/widgets/src/error_view.dart';
 import 'package:go_router/go_router.dart';
 
 class NotFoundPage extends StatelessWidget {
@@ -13,18 +14,13 @@ class NotFoundPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Oops..',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-            ),
-            const Text('We couldn\'t find what you are looking for'),
-            const SizedBox(
-              height: 15,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  context.go('/');
-                }, child: const Text('Go To Home Page'))
+            ErrorView(
+              retryButtonLabel: 'Go to Home Page',
+              title: 'Oops...',
+              subtitle: 'We couldn\'t find what you are looking for',
+              onRetry: (){
+                context.go('/');
+            },)
           ],
         ),
       ),

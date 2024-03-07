@@ -232,6 +232,7 @@ extension ContextExt on BuildContext {
               imagesSuccessPath,
               width: 150,
               height: 150, // / 1.2,
+              color: theme.primaryColor,
               fit: BoxFit.cover,
             ).clipAllCorners(10),
             verticalSpaceFive,

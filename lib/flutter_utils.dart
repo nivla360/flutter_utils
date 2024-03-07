@@ -22,7 +22,7 @@ class FlutterUtil {
   required String imagesError,
   required String imagesNoResults,
   required String imagesNoInternet,
-  required String imagesSuccess}) {
+    String imagesSuccess = "packages/flutter_utils/assets/images/success.png"}) {
     loadingWidget30 = loaderSmall;
     loadingWidget50 = loaderMedium;
     loadingWidget70 = loaderLarge;

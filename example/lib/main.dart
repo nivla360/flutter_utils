@@ -26,7 +26,7 @@ Future initServices() async {
       imagesError: "assets/images/empty.png",
       imagesNoInternet: "assets/images/empty.png",
       imagesNoResults: "assets/images/empty.png",
-      imagesSuccess: "assets/images/empty.png",
+      // imagesSuccess: "assets/images/empty.png",
   );
   await Future.delayed(const Duration(milliseconds: 10));
 }
@@ -136,8 +136,8 @@ class MyHomePage extends StatelessView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           // controller.showDialog();
-          // context.showSuccessDialog(title: "Simple");
-          context.showNoInternetDialog();
+          context.showSuccessDialog(title: "Simple");
+          // context.showNoInternetDialog();
         },//()=>controller.counter++,
         tooltip: 'Increment',
         child: const Icon(Icons.add),

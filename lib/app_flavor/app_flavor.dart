@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 enum AppFlavors { development, staging, production, }
 
+typedef Configure = Future<void> Function();
 
 class AppFlavor {
   AppFlavors flavor = AppFlavors.production;
@@ -21,10 +22,11 @@ class AppFlavor {
 
   static AppFlavor get instance => _appFlavor;
 
-  Future init(AppFlavors appFlavor,{VoidCallback? configure}) async {
+
+  Future init(AppFlavors appFlavor,{Configure? configure}) async {
     flavor = appFlavor;
     if(configure != null){
-      configure();
+      await configure();
     }
   }
 }

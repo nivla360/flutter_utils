@@ -107,12 +107,15 @@ extension ContextExt on BuildContext {
     required String title,
     required String description,
     List<Widget> actions = const [],
+    bool showOkButton = true
   }) async {
     if (actions.isEmpty) {
       actions = [];
-      actions.add(
+      if(showOkButton) {
+        actions.add(
         TextButton(onPressed: pop, child: const Text('OK')),
       );
+      }
     }
     final result = await showDialog<dynamic>(
         context: this,

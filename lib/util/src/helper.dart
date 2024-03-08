@@ -106,6 +106,21 @@ bool textIsNumeric(String? s, {bool isDouble = false, String? ignoreChar}) {
   }
 }
 
+String getHumanReadableFileSize({required int fileLength}) {
+  double kBSize = fileLength / 1024;
+  double mBSize = kBSize / 1024;
+  return mBSize > 1 ? "${mBSize.round()} MB" : "${kBSize.round()} KB";
+}
+
+num getFileSizeMB({required int fileLength}) {
+  double KBSize = fileLength / 1024;
+  return KBSize / 1024.round();
+}
+
+num getFileSizeKB({@required fileLength}) {
+  return (fileLength / 1024).round();
+}
+
 void openUrl(Uri uri) async {
   if (!await launchUrl(uri)) showErrorToast('Sorry, unable to load page');
 }

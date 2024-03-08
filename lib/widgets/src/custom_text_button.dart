@@ -41,9 +41,6 @@ class CustomTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if(onTap == null){
-    //   color = Colors.grey;
-    // }
 
     final isSecondary = _buttonType == _ButtonType.secondary;
     final isTertiary = _buttonType == _ButtonType.tertiary;
@@ -69,7 +66,6 @@ class CustomTextButton extends StatelessWidget {
         side: isSecondary
             ? BorderSide(color: color ?? context.theme.primaryColor, width: 1.5)
             : null);
-    // final  button = ;
     if (icon != null) {
       return SizedBox(
         width: double.infinity,

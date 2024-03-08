@@ -67,13 +67,13 @@ class RootController extends ChangeNotifier {
     onInit();
   }
 
-  @override
-  void notifyListeners() {
-    if(!_mounted){
-      return;
-    }
-    super.notifyListeners();
-  }
+  // @override
+  // void notifyListeners() {
+  //   if(!_mounted){
+  //     return;
+  //   }
+  //   super.notifyListeners();
+  // }
 
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

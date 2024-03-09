@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 
 abstract class FullLifeCycleController extends RootController
     // ignore: prefer_mixin
@@ -54,6 +55,7 @@ class RootController extends ChangeNotifier {
   bool _isDarkMode = false;
   bool isInitialized = false;
   double width = 0.0,height = 0.0;
+  GoRouterState? routeState;
 
   bool get mounted => _mounted;
   bool get isDarkMode => _isDarkMode;

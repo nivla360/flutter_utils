@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 
-// final heightScaleFactor = height / baseScreenHeight;
-
-
 extension NumExt on num {
 
   Widget get verticalSpace => SizedBox(height: toDouble(),);

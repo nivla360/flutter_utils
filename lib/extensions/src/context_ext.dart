@@ -185,8 +185,12 @@ extension ContextExt on BuildContext {
         String retryButtonLabel = 'OKAY',
         String? title}) async {
     if (isDialogOpen) {
-      pop();
-      await Future.delayed(const Duration(milliseconds: 500));
+      try {
+        pop();
+        await Future.delayed(const Duration(milliseconds: 500));
+      } catch (e) {
+        print(e);
+      }
     }
     // isDialogOpen = true;
     final result = await showDialog(
@@ -215,8 +219,12 @@ extension ContextExt on BuildContext {
         String? description,
         String title = 'Success!'}) async {
     if (isDialogOpen) {
-      pop();
-      await Future.delayed(const Duration(milliseconds: 300));
+      try {
+        pop();
+        await Future.delayed(const Duration(milliseconds: 300));
+      } catch (e) {
+        print(e);
+      }
     }
     final result = await showDialog(
       context: this,
@@ -235,7 +243,7 @@ extension ContextExt on BuildContext {
               imagesSuccessPath,
               width: 150,
               height: 150, // / 1.2,
-              color: theme.primaryColor,
+              color: Colors.green,
               fit: BoxFit.cover,
             ).clipAllCorners(10),
             verticalSpaceFive,
@@ -319,8 +327,12 @@ extension ContextExt on BuildContext {
         VoidCallback? onRetry,
         String message = errorNoInternet}) async {
     if (isDialogOpen) {
-      pop();
-      await Future.delayed(const Duration(milliseconds: 300));
+      try {
+        pop();
+        await Future.delayed(const Duration(milliseconds: 300));
+      } catch (e) {
+        print(e);
+      }
     }
     final result = await showDialog(
         context: this,

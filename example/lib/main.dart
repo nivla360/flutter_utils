@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_utils/app_flavor/app_flavor.dart';
 import 'package:flutter_utils/extensions/extensions.dart';
 import 'package:flutter_utils/flutter_utils.dart';
+import 'package:flutter_utils/util/src/helper.dart';
 import 'package:flutter_utils/widgets/widgets.dart';
 import 'app_route.dart';
 
@@ -102,6 +103,7 @@ class MyHomePage extends StatelessView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    logInfo("DARKMODE: ${controller.isDarkMode}");
     return  StyledToast(
         backgroundColor: Colors.blue,
         borderRadius: BorderRadius.circular(30),

@@ -121,11 +121,16 @@ num getFileSizeKB({@required fileLength}) {
   return (fileLength / 1024).round();
 }
 
-void openUrl(Uri uri) async {
-  if (!await launchUrl(uri)) showErrorToast('Sorry, unable to load page');
+void openUrl(String url) async {
+  try {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri)) showErrorToast('Sorry, unable to load page');
+  } catch (e) {
+    showErrorToast('Sorry, unable to load page');
+  }
 }
 
-String getAPIErrorMessage(Map<String, dynamic> data) {
+String getStrapiAPIErrorMessage(Map<String, dynamic> data) {
   // Extracting the main error information
   final error = data['error'];
   final defaultMessage = error?['message'] ?? errorUnknown;

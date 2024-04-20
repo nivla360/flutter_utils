@@ -117,23 +117,29 @@ class MyHomePage extends StatelessView<HomeController> {
         title: Text(controller.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            CustomTextButton(onTap: (){}, label: "Primary",icon: Ionicons.person,),
-            CustomTextButton.secondary(onTap: (){}, label: "Secondary",icon: Ionicons.chatbox),
-            CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
-            CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              CustomTextButton(onTap: (){}, label: "Primary",icon: Ionicons.person,),
+              CustomTextButton.secondary(onTap: (){}, label: "Secondary",icon: Ionicons.chatbox),
+              CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
+              CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
 
-            ReactiveWidget<HomeController>(builder: (context,controller)=>Text(
-              '${controller.counter}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            )),
-          ],
-        ).paddingAll(16),
+              ReactiveWidget<HomeController>(builder: (context,controller)=>Text(
+                '${controller.counter}',
+                style: Theme.of(context).textTheme.headlineMedium,
+              )),
+              NumExt(10).verticalSpace,
+              CustomCard(
+                  onTap: (){},
+                  child: Text('My Card').paddingAll(15))
+            ],
+          ).paddingAll(16),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){

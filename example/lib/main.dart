@@ -133,7 +133,7 @@ class MyHomePage extends StatelessView<HomeController> {
                 '${controller.counter}',
                 style: Theme.of(context).textTheme.headlineMedium,
               )),
-              NumExt(10).verticalSpace,
+              10.verticalSpace,
               CustomCard(
                   onTap: (){},
                   child: Text('My Card').paddingAll(15))

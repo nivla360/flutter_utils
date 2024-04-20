@@ -148,7 +148,7 @@ class MyHomePage extends StatelessView<HomeController> {
           // context.showNoInternetDialog();
           context.go('dfdfdf');
         },//()=>controller.counter++,
-        tooltip: 'Increment',
+        tooltip: 'navigate',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     ));

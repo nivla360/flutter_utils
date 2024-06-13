@@ -84,4 +84,9 @@ class ListNotifier<T> extends ValueNotifier<List<T>> {
     value.clear();
     notifyListeners();
   }
+
+  void addAll(Iterable<T> items){
+    value.addAll(items);
+    notifyListeners();
+  }
 }

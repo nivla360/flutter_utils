@@ -162,6 +162,18 @@ String getStrapiAPIErrorMessage(Map<String, dynamic> data) {
 //   return '$title${title.isNotEmpty ? ', ' : ''}$message';
 // }
 
+hideKeyboard(){
+  try {
+    FocusManager.instance.primaryFocus?.unfocus();
+  } catch (e) {
+    print(e);
+  }
+}
+
+hideKeyboardNative(){
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
+}
+
 sendEmail(
     {required String subject,required String email, String body = 'Hello,\n\n'}) async {
   try {

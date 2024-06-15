@@ -70,7 +70,7 @@ extension ContextExt on BuildContext {
     );
 
 
-  showCustomModal({
+  Future<dynamic> showCustomModal({
     String? title,
     Widget? bottomButton,
     EdgeInsetsGeometry padding = const EdgeInsets.all(15),
@@ -78,7 +78,7 @@ extension ContextExt on BuildContext {
     required Widget child,
   }) {
     const borderRadius = Radius.circular(15);
-    _showBottomSheet(
+  return  _showBottomSheet(
       child: CustomModal(
           title: title,
           bottomButton: bottomButton,
@@ -134,7 +134,7 @@ extension ContextExt on BuildContext {
     return result;
   }
 
-  Future showLoadingDialog(
+  Future<dynamic> showLoadingDialog(
       {bool barrierDismissible = true,
         String title = 'Please Wait...',
         String? message,
@@ -213,7 +213,7 @@ extension ContextExt on BuildContext {
     return result;
   }
 
-  Future showSuccessDialog(
+  Future<dynamic> showSuccessDialog(
       {bool barrierDismissible = true,
         Function? onOkayTap,
         String? description,
@@ -321,7 +321,7 @@ extension ContextExt on BuildContext {
       barrierDismissible: false,
     );
 
-  showNoInternetDialog(
+  Future<dynamic>showNoInternetDialog(
       {bool barrierDismissible = true,
         bool shouldRetry = false,
         VoidCallback? onRetry,

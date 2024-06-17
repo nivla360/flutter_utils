@@ -52,17 +52,14 @@ mixin FullLifeCycleMixin on FullLifeCycleController {
 
 class RootController extends ChangeNotifier {
   bool _mounted = true;
-  bool _isDarkMode = false;
   bool isInitialized = false;
   double width = 0.0,height = 0.0;
   GoRouterState? routeState;
 
   bool get mounted => _mounted;
-  bool get isDarkMode => _isDarkMode;
 
   RootController() {
     var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-    _isDarkMode = brightness == Brightness.dark;
     final size = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
     width = size.width;
     height = size.height;

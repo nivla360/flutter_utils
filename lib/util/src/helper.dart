@@ -121,10 +121,10 @@ num getFileSizeKB({@required fileLength}) {
   return (fileLength / 1024).round();
 }
 
-void openUrl(String url) async {
+void openUrl(String url,{LaunchMode mode = LaunchMode.platformDefault}) async {
   try {
     final uri = Uri.parse(url);
-    if (!await launchUrl(uri)) showErrorToast('Sorry, unable to load page');
+    if (!await launchUrl(uri,mode: mode)) showErrorToast('Sorry, unable to load page');
   } catch (e) {
     showErrorToast('Sorry, unable to load page');
   }

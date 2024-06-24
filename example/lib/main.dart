@@ -103,7 +103,7 @@ class MyHomePage extends StatelessView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    logInfo("DARKMODE: ${controller.isDarkMode}");
+    // logInfo("DARKMODE: ${controller.isDarkMode}");
     return  StyledToast(
         backgroundColor: Colors.blue,
         borderRadius: BorderRadius.circular(30),

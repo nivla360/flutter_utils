@@ -39,9 +39,15 @@ String shortenLargeNumber(int number) {
 }
 
 
-logInfo(data){
+logInfo(data,{StackTrace? stackTrace}){
   if (AppFlavor.instance.flavor == AppFlavors.development) {
-    logger.i(data);
+    logger.i(data,stackTrace: stackTrace);
+  }
+}
+
+logError(data,{StackTrace? stackTrace}){
+  if (AppFlavor.instance.flavor == AppFlavors.development) {
+    logger.e(data,stackTrace: stackTrace);
   }
 }
 

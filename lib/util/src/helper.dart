@@ -112,10 +112,12 @@ bool textIsNumeric(String? s, {bool isDouble = false, String? ignoreChar}) {
   }
 }
 
-String getHumanReadableFileSize({required int fileLength}) {
+String getHumanReadableFileSize({required int fileLength, int decimalPlaces = 2}) {
   double kBSize = fileLength / 1024;
   double mBSize = kBSize / 1024;
-  return mBSize > 1 ? "${mBSize.round()} MB" : "${kBSize.round()} KB";
+  return mBSize > 1
+      ? "${mBSize.toStringAsFixed(decimalPlaces)} MB"
+      : "${kBSize.toStringAsFixed(decimalPlaces)} KB";
 }
 
 num getFileSizeMB({required int fileLength}) {

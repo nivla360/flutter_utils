@@ -102,6 +102,27 @@ extension ContextExt on BuildContext {
         builder: (_) => child,
         barrierDismissible: barrierDismissible);
 
+  Future<dynamic> showOptionsDialog({
+    required String title,
+    required List<String> options,
+    required Function(String s) onOptionClick,
+    EdgeInsets itemPadding = const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+  }) => showCustomDialog(
+        child: SimpleDialog(
+          title: Text(title),
+          children: options
+              .map((item) => SimpleDialogOption(
+                    padding: itemPadding,
+                    onPressed: () {
+                      onOptionClick(item);
+                      pop();
+                    },
+                    child: Text(item),
+                  ))
+              .toList(growable: false),
+        ),
+      );
+
   Future<dynamic> showSimpleCustomDialog({
     bool barrierDismissible = true,
     required String title,

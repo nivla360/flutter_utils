@@ -125,7 +125,11 @@ class MyHomePage extends StatelessView<HomeController> {
                 'You have pushed the button this many times:',
               ),
               CustomTextButton(onTap: (){}, label: "Primary",icon: Ionicons.person,),
-              CustomTextButton.secondary(onTap: (){}, label: "Secondary",icon: Ionicons.chatbox),
+              CustomTextButton.secondary(onTap: (){
+                context.showOptionsDialog(title: 'Some Price', options: ['option1','option2','option3'], onOptionClick: (option){
+                  logInfo(option);
+                });
+              }, label: "Secondary",icon: Ionicons.chatbox),
               CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
               CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
 

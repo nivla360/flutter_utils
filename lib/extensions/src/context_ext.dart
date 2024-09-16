@@ -238,6 +238,7 @@ extension ContextExt on BuildContext {
       {bool barrierDismissible = true,
         Function? onOkayTap,
         String? description,
+        ,
         String title = 'Success!'}) async {
     if (isDialogOpen) {
       try {
@@ -260,13 +261,14 @@ extension ContextExt on BuildContext {
             //   height: 150,
             //   width: 150,
             // ),
-            PlatformImageAsset(
-              imagesSuccessPath,
-              width: 150,
-              height: 150, // / 1.2,
-              color: Colors.green,
-              fit: BoxFit.cover,
-            ).clipAllCorners(10),
+            const Icon(Icons.check_circle,color: Colors.green,size: 100,),
+            // PlatformImageAsset(
+            //   imagesSuccessPath,
+            //   width: 150,
+            //   height: 150, // / 1.2,
+            //   color: Colors.green,
+            //   fit: BoxFit.cover,
+            // ).clipAllCorners(10),
             verticalSpaceFive,
             Text(
               title,

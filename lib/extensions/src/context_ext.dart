@@ -238,7 +238,6 @@ extension ContextExt on BuildContext {
       {bool barrierDismissible = true,
         Function? onOkayTap,
         String? description,
-        ,
         String title = 'Success!'}) async {
     if (isDialogOpen) {
       try {

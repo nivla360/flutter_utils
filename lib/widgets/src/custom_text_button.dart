@@ -11,6 +11,7 @@ class CustomTextButton extends StatelessWidget {
   final String label;
   final Color? color;
   final IconData? icon;
+  final double? width;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
@@ -19,6 +20,7 @@ class CustomTextButton extends StatelessWidget {
       {required this.onTap,
       this.color,
       required this.label,
+        this.width,
         this.padding,
         this.borderRadius,
       this.icon,
@@ -31,6 +33,7 @@ class CustomTextButton extends StatelessWidget {
       this.color,
       required this.label,
         this.padding,
+        this.width,
         this.borderRadius,
       this.icon,
       Key? key})
@@ -43,6 +46,7 @@ class CustomTextButton extends StatelessWidget {
       this.icon,
       required this.label,
         this.padding,
+        this.width,
         this.borderRadius,
       Key? key})
       : _buttonType = _ButtonType.tertiary,
@@ -78,7 +82,7 @@ class CustomTextButton extends StatelessWidget {
             : null);
     if (icon != null) {
       return SizedBox(
-        width: double.infinity,
+        width: width ?? double.infinity,
         child: TextButton.icon(
             onPressed: onTap,
             icon: Icon(
@@ -94,7 +98,7 @@ class CustomTextButton extends StatelessWidget {
     }
 
     return SizedBox(
-      width: double.infinity,
+      width: width ?? double.infinity,
       child: TextButton(
         onPressed: onTap,
         style: buttonStyle,

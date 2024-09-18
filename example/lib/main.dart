@@ -132,7 +132,7 @@ class MyHomePage extends StatelessView<HomeController> {
               }, label: "Secondary",icon: Ionicons.chatbox),
               CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
               CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
-
+              CustomTextButton(onTap: (){}, label: 'Login'),
               ReactiveWidget<HomeController>(builder: (context,controller)=>Text(
                 '${controller.counter}',
                 style: Theme.of(context).textTheme.headlineMedium,

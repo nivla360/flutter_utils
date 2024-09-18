@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_utils/extensions/extensions.dart';
 
@@ -10,12 +11,16 @@ class CustomTextButton extends StatelessWidget {
   final String label;
   final Color? color;
   final IconData? icon;
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsets? padding;
   final VoidCallback? onTap;
 
   const CustomTextButton(
       {required this.onTap,
       this.color,
       required this.label,
+        this.padding,
+        this.borderRadius,
       this.icon,
       Key? key})
       : _buttonType = _ButtonType.primary,
@@ -25,6 +30,8 @@ class CustomTextButton extends StatelessWidget {
       {required this.onTap,
       this.color,
       required this.label,
+        this.padding,
+        this.borderRadius,
       this.icon,
       Key? key})
       : _buttonType = _ButtonType.secondary,
@@ -35,6 +42,8 @@ class CustomTextButton extends StatelessWidget {
       this.color,
       this.icon,
       required this.label,
+        this.padding,
+        this.borderRadius,
       Key? key})
       : _buttonType = _ButtonType.tertiary,
         super(key: key);
@@ -44,6 +53,7 @@ class CustomTextButton extends StatelessWidget {
 
     final isSecondary = _buttonType == _ButtonType.secondary;
     final isTertiary = _buttonType == _ButtonType.tertiary;
+    final newPadding = padding ?? (kIsWeb && icon == null ? const EdgeInsets.symmetric(vertical: 19) :  const EdgeInsets.all(18));
     final textStyle = TextStyle(
         color: isSecondary
             ? (color ?? context.theme.primaryColor)
@@ -59,9 +69,9 @@ class CustomTextButton extends StatelessWidget {
                 (isTertiary
                     ? Colors.grey.shade600
                     : context.theme.primaryColor)),
-        padding: const EdgeInsets.all(18),
+        padding: newPadding,
         shape: RoundedRectangleBorder(
-          borderRadius: borderRadiusFifteen,
+          borderRadius: borderRadius ?? borderRadiusFifteen,
         ),
         side: isSecondary
             ? BorderSide(color: color ?? context.theme.primaryColor, width: 1.5)

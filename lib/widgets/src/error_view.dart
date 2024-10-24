@@ -109,6 +109,7 @@ class ErrorView extends StatelessWidget {
                   // verticalSpaceTen,
                   Text(
                     _title ?? '',
+                    textAlign: TextAlign.center,
                     style: context.theme.appBarTheme.titleTextStyle!
                         .copyWith(fontSize: 25),
                   ),

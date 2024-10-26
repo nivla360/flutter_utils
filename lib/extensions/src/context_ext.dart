@@ -43,7 +43,7 @@ extension ContextExt on BuildContext {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        margin: EdgeInsets.only(bottom: height - 200, right: 20, left: 20)));
+        margin: EdgeInsets.only(bottom: height - 100, right: 20, left: 20)));
   }
 
   Future<T?> _showBottomSheet<T>({

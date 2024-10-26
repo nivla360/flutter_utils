@@ -109,7 +109,7 @@ extension ContextExt on BuildContext {
     EdgeInsets itemPadding = const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
   }) => showCustomDialog(
         child: SimpleDialog(
-          title: Text(title),
+          title: Text(title, style: theme.appBarTheme.titleTextStyle,),
           children: options
               .map((item) => SimpleDialogOption(
                     padding: itemPadding,
@@ -117,7 +117,7 @@ extension ContextExt on BuildContext {
                       onOptionClick(item);
                       pop();
                     },
-                    child: Text(item),
+                    child: Text(item,style: theme.textTheme.headlineMedium,),
                   ))
               .toList(growable: false),
         ),
@@ -273,7 +273,7 @@ extension ContextExt on BuildContext {
               title,
               style: theme.appBarTheme.titleTextStyle,
             ),
-            Text(description ?? 'Process completed successfully')
+            Text(description ?? 'Process completed successfully',textAlign: TextAlign.center,)
                 .paddingOnly(top: 5, bottom: 15),
             TextButton(
               onPressed: () async {

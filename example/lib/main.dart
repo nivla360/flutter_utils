@@ -140,7 +140,8 @@ class MyHomePage extends StatelessView<HomeController> {
               10.verticalSpace,
               CustomCard(
                   onTap: (){
-                    context.showErrorDialog(title: "SomeTitle d56ftygui gtyuhi",description: "srzdxfcgh");
+                    // context.showErrorDialog(title: "SomeTitle d56ftygui gtyuhi",description: "srzdxfcgh");
+                    context.showOptionsDialog(title: 'Some title', options: ['Option 1','Option 2'], onOptionClick: (option){});
                   },
                   child: Text('My Card').paddingAll(15))
             ],

@@ -105,9 +105,11 @@ extension ContextExt on BuildContext {
   Future<dynamic> showOptionsDialog({
     required String title,
     required List<String> options,
+    bool barrierDismissible = true,
     required Function(String s) onOptionClick,
     EdgeInsets itemPadding = const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
   }) => showCustomDialog(
+    barrierDismissible: barrierDismissible,
         child: SimpleDialog(
           title: Text(title, style: theme.appBarTheme.titleTextStyle,),
           children: options

@@ -216,6 +216,7 @@ extension ContextExt on BuildContext {
     // isDialogOpen = true;
     final result = await showDialog(
       context: this,
+      barrierDismissible: barrierDismissible,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: borderRadiusFifteen),
         content: Column(
@@ -249,6 +250,7 @@ extension ContextExt on BuildContext {
     }
     final result = await showDialog(
       context: this,
+      barrierDismissible: barrierDismissible,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: borderRadiusFifteen),
         content: Column(

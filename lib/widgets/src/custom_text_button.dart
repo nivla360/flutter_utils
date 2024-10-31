@@ -24,9 +24,8 @@ class CustomTextButton extends StatelessWidget {
         this.padding,
         this.borderRadius,
       this.icon,
-      Key? key})
-      : _buttonType = _ButtonType.primary,
-        super(key: key);
+      super.key})
+      : _buttonType = _ButtonType.primary;
 
   const CustomTextButton.secondary(
       {required this.onTap,
@@ -36,9 +35,8 @@ class CustomTextButton extends StatelessWidget {
         this.width,
         this.borderRadius,
       this.icon,
-      Key? key})
-      : _buttonType = _ButtonType.secondary,
-        super(key: key);
+      super.key})
+      : _buttonType = _ButtonType.secondary;
 
   const CustomTextButton.tertiary(
       {required this.onTap,
@@ -48,16 +46,15 @@ class CustomTextButton extends StatelessWidget {
         this.padding,
         this.width,
         this.borderRadius,
-      Key? key})
-      : _buttonType = _ButtonType.tertiary,
-        super(key: key);
+      super.key})
+      : _buttonType = _ButtonType.tertiary;
 
   @override
   Widget build(BuildContext context) {
 
     final isSecondary = _buttonType == _ButtonType.secondary;
     final isTertiary = _buttonType == _ButtonType.tertiary;
-    final newPadding = padding ?? (kIsWeb && icon == null ? const EdgeInsets.symmetric(vertical: 19) :  const EdgeInsets.all(18));
+    final newPadding = padding ?? (context.screenIsDesktop && icon == null ? const EdgeInsets.symmetric(vertical: 22) :  const EdgeInsets.all(18));
     final textStyle = TextStyle(
         color: isSecondary
             ? (color ?? context.theme.primaryColor)

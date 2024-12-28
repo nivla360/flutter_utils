@@ -54,7 +54,7 @@ class CustomTextButton extends StatelessWidget {
 
     final isSecondary = _buttonType == _ButtonType.secondary;
     final isTertiary = _buttonType == _ButtonType.tertiary;
-    final newPadding = padding ?? (context.screenIsDesktop && icon == null ? const EdgeInsets.symmetric(vertical: 22) :  const EdgeInsets.all(18));
+    final newPadding = padding ?? (context.screenIsDesktop ? const EdgeInsets.symmetric(vertical: 22) :  const EdgeInsets.all(18));
     final textStyle = TextStyle(
         color: isSecondary
             ? (color ?? context.theme.primaryColor)

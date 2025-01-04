@@ -96,14 +96,21 @@ class CustomTextButton extends StatelessWidget {
 
     return SizedBox(
       width: width ?? double.infinity,
-      child: TextButton(
+      child: onTap == null ? Opacity(opacity: 0.4, child: TextButton(
         onPressed: onTap,
         style: buttonStyle,
         child: Text(
           label,
           style: textStyle,
         ),
-      ),
+      )): TextButton(
+        onPressed: onTap,
+        style: buttonStyle,
+        child: Text(
+          label,
+          style: textStyle,
+        ),
+      ) ,
     );
   }
 }

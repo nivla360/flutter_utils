@@ -80,7 +80,17 @@ class CustomTextButton extends StatelessWidget {
     if (icon != null) {
       return SizedBox(
         width: width ?? double.infinity,
-        child: TextButton.icon(
+        child: onTap == null ? Opacity(opacity: 0.4, child: TextButton.icon(
+            onPressed: onTap,
+            icon: Icon(
+              icon,
+              color: !isSecondary ? Colors.white : context.theme.primaryColor,
+            ),
+            style: buttonStyle,
+            label: Text(
+              label,
+              style: textStyle,
+            ))) : TextButton.icon(
             onPressed: onTap,
             icon: Icon(
               icon,

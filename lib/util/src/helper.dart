@@ -38,6 +38,14 @@ String shortenLargeNumber(int number) {
   }
 }
 
+int colorFromHex(String hexColor) {
+  hexColor = hexColor.replaceAll('#', '');
+  if (hexColor.length == 6) {
+    hexColor = 'FF' + hexColor; // Add alpha value if not provided
+  }
+  return int.parse('0x$hexColor');
+}
+
 
 logInfo(data,{StackTrace? stackTrace}){
   if (AppFlavor.instance.flavor == AppFlavors.development) {

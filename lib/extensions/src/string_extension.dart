@@ -1,7 +1,28 @@
 
 import 'get_utils.dart';
+import 'package:flutter/material.dart';
 
 extension StringExt on String {
+
+   Color? toColor() {
+    try {
+      String hexColor = this.replaceAll('#', '');
+      if (hexColor.length != 6 && hexColor.length != 8) {
+        return null;
+      }
+      if (hexColor.length == 6) {
+        hexColor = 'FF' + hexColor;
+      }
+      final colorValue = int.tryParse('0x$hexColor');
+      if (colorValue == null) {
+        return null;
+      }
+      return Color(colorValue);
+    } catch (e) {
+      return null;
+    }
+  }
+  
   /// Discover if the String is a valid number
   bool get isNum => GetUtils.isNum(this);
 

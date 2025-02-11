@@ -25,7 +25,7 @@ extension ContextExt on BuildContext {
 
   Color get scaffoldBgColor => Theme.of(this).scaffoldBackgroundColor;
 
-  bool get isDialogOpen => ModalRoute.of(this)?.isCurrent != true;
+  bool get isDialogOpen => ModalRoute.of(this) is PopupRoute;
 
   Brightness get brightness => MediaQuery.of(this).platformBrightness;
 

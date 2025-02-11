@@ -294,7 +294,7 @@ extension ContextExt on BuildContext {
               child: Text(
                 'OKAY',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white : null,
+                  color: Colors.white,
                 ),
               ),
             )

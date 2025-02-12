@@ -45,6 +45,7 @@ A comprehensive Flutter utility package that provides a collection of helpful to
   - `ionicons` for icons
   - `flutter_screenutil` for responsive design
   - `flutter_styled_toast` for toast messages
+  - `flutter_animate` for animations
 
 - 🔧 **Common Constants**
   - Border radius presets

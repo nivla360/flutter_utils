@@ -28,6 +28,6 @@ class CustomCard extends StatelessWidget {
             Radius.circular(borderRadius),
           ),
         ),
-        child: Material(child: InkWell(onTap: onTap,child: child,),).clipAllCorners(borderRadius));
+        child: Material(child: InkWell(onTap: onTap,child: child,),color: color,).clipAllCorners(borderRadius));
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_utils/extensions/extensions.dart';
-import 'package:flutter_utils/widgets/src/animated_sliver_list.dart';
 
 import '../../util/util.dart';
 import 'error_view.dart';
+
 
 ///加载更多回调
 // typedef LoadMoreCallback = Future<void> Function();
@@ -32,7 +32,7 @@ enum LoadStatus {
 ///加载更多 Widget
 class LoadMore extends StatefulWidget {
   ///加载状态
-  final LoadStatus status, initialStatus;
+  final LoadStatus status,initialStatus;
 
   ///加载更多回调
   final VoidCallback onLoadMore;
@@ -79,15 +79,6 @@ class LoadMore extends StatefulWidget {
   ///Text displayed when loading is finished
   final String finishMsg;
 
-  /// Whether to animate new items when they are added
-  final bool animateNewItems;
-
-  /// Duration for the stagger effect between item animations
-  final Duration? staggerDuration;
-
-  /// Duration for each item's animation
-  final Duration? animationDuration;
-
   const LoadMore({
     required this.status,
     required this.initialStatus,
@@ -105,11 +96,8 @@ class LoadMore extends StatefulWidget {
     this.loadingMsg = 'Loading...',
     this.errorMsg = 'An error occurred，try again',
     this.finishMsg = ' No more items ',
-    this.animateNewItems = false,
-    this.staggerDuration,
-    this.animationDuration,
     required this.child,
-    super.key,
+    super.key
   });
 
   @override
@@ -117,46 +105,35 @@ class LoadMore extends StatefulWidget {
 }
 
 class _LoadMoreState extends State<LoadMore> {
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (widget.initialApiCall != null) {
-        widget.initialApiCall!();
-      }
-    });
+    // if (widget.callInitAfterPostFrameCallBack) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if(widget.initialApiCall != null) {
+          widget.initialApiCall!();
+        }
+      });
+    // } else {
+    //   if(widget.initialApiCall != null) {
+    //     widget.initialApiCall!();
+    //   }
+    // }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     ///添加 Footer Sliver
-    final slivers = List<Widget>.from(widget.child.slivers);
+    dynamic check =
+    widget.child.slivers.elementAt(widget.child.slivers.length - 1);
 
     ///判断是否已存在 Footer
-    if (slivers.isNotEmpty &&
-        slivers.last is SliverSafeArea &&
-        (slivers.last as SliverSafeArea).key == widget._keyLastItem) {
-      slivers.removeLast();
+    if (check is SliverSafeArea && check.key == widget._keyLastItem) {
+      widget.child.slivers.removeLast();
     }
 
-    // Convert any SliverList to AnimatedSliverList if animation is enabled
-    final animatedSlivers = slivers.map((sliver) {
-      if (sliver is SliverList && widget.animateNewItems) {
-        final delegate = sliver.delegate as SliverChildBuilderDelegate;
-        return AnimatedSliverList(
-          itemCount: delegate.childCount ?? 0,
-          itemBuilder: (context, index) =>
-              delegate.builder(context, index) ?? Container(),
-          shouldAnimateItems: widget.animateNewItems,
-          staggerDuration: widget.staggerDuration,
-          animationDuration: widget.animationDuration,
-        );
-      }
-      return sliver;
-    }).toList();
-
-    // Add footer
-    animatedSlivers.add(
+    widget.child.slivers.add(
       SliverSafeArea(
         key: widget._keyLastItem,
         top: false,
@@ -168,31 +145,12 @@ class _LoadMoreState extends State<LoadMore> {
       ),
     );
 
-    final updatedChild = CustomScrollView(
-      controller: widget.child.controller,
-      scrollDirection: widget.child.scrollDirection,
-      reverse: widget.child.reverse,
-      primary: widget.child.primary,
-      physics: widget.child.physics,
-      shrinkWrap: widget.child.shrinkWrap,
-      center: widget.child.center,
-      anchor: widget.child.anchor,
-      cacheExtent: widget.child.cacheExtent,
-      semanticChildCount: widget.child.semanticChildCount,
-      dragStartBehavior: widget.child.dragStartBehavior,
-      keyboardDismissBehavior: widget.child.keyboardDismissBehavior,
-      restorationId: widget.child.restorationId,
-      clipBehavior: widget.child.clipBehavior,
-      slivers: animatedSlivers,
-    );
-
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
+    return AnimatedSwitcher(duration: const Duration(milliseconds: 400),
       transitionBuilder: (child, animation) {
         final offsetAnimation = Tween<Offset>(
-          begin: const Offset(0.07, 0.0),
-          end: const Offset(0.00, 0.0),
-        ).animate(animation);
+            begin: const Offset(0.07,0.0),
+            end: const Offset(0.00,0.0))
+            .animate(animation);
         return FadeTransition(
           opacity: animation,
           child: SlideTransition(
@@ -201,47 +159,37 @@ class _LoadMoreState extends State<LoadMore> {
           ),
         );
       },
-      child: widget.onRefresh == null
-          ? widget.initialStatus == LoadStatus.initialLoadSuccess
-              ? NotificationListener<ScrollNotification>(
-                  onNotification: _handleNotification,
-                  child: updatedChild,
-                )
-              : _buildInitialLoader(context, widget.initialStatus)
+      child: widget.onRefresh == null ? widget.initialStatus == LoadStatus.initialLoadSuccess ? NotificationListener<ScrollNotification>(
+        onNotification: _handleNotification,
+        child: widget.child,
+      ) : _buildInitialLoader(context,widget.initialStatus)
           : RefreshIndicator(
-              onRefresh: widget.onRefresh!,
-              color: context.theme.primaryColor,
-              child: widget.initialStatus == LoadStatus.initialLoadSuccess
-                  ? NotificationListener<ScrollNotification>(
-                      onNotification: _handleNotification,
-                      child: updatedChild,
-                    )
-                  : _buildInitialLoader(context, widget.initialStatus),
-            ),
-    );
+          onRefresh: widget.onRefresh!,
+          color: context.theme.primaryColor,
+          child: widget.initialStatus == LoadStatus.initialLoadSuccess ? NotificationListener<ScrollNotification>(
+          onNotification: _handleNotification,
+          child: widget.child,
+    ) : _buildInitialLoader(context,widget.initialStatus),
+      ),);
   }
 
-  Widget _buildInitialLoader(BuildContext context, LoadStatus status) {
+  Widget _buildInitialLoader(BuildContext context,LoadStatus status){
+
     // if(widget.initialLoaderBuilder != null && status == LoadStatus.loading){
     //   return widget.initialLoaderBuilder!(context,status);
     // }
-    if (widget.initialLoaderBuilder != null) {
-      return widget.initialLoaderBuilder!(context, status);
+    if(widget.initialLoaderBuilder != null){
+      return widget.initialLoaderBuilder!(context,status);
     }
     switch (status) {
       case LoadStatus.loading:
-        return Center(
-          child: loadingWidget30,
-        );
+        return Center(child: loadingWidget30,);
       case LoadStatus.noInternet:
         return ErrorView.noInternet(
           onRetry: widget.initialApiCall ?? widget.onRefresh,
         );
       case LoadStatus.initialLoadEmpty:
-        return ErrorView.noResult(
-          isChat: widget.isChat,
-          onRetry: widget.initialApiCall ?? widget.onRefresh,
-        );
+        return ErrorView.noResult(isChat: widget.isChat,onRetry: widget.initialApiCall ?? widget.onRefresh,);
       case LoadStatus.error:
         return ErrorView(onRetry: widget.initialApiCall ?? widget.onRefresh);
       default:
@@ -273,7 +221,7 @@ class _LoadMoreState extends State<LoadMore> {
     }
   }
 
-  _buildNoInternetError() {
+  _buildNoInternetError(){
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -285,7 +233,7 @@ class _LoadMoreState extends State<LoadMore> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
+          children: const <Widget> [
             Icon(
               Icons.error,
               color: Colors.red,
@@ -309,27 +257,25 @@ class _LoadMoreState extends State<LoadMore> {
   Widget _buildLoading() {
     return SizedBox(
       height: widget.footerHeight,
-      child: widget.showLoadingText
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: loadingWidget30,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  widget.loadingMsg,
-                ),
-              ],
-            )
-          : SizedBox(
-              width: 30,
-              height: 30,
-              child: loadingWidget30,
-            ),
+      child: widget.showLoadingText ? Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+           SizedBox(
+            width: 30,
+            height: 30,
+            child: loadingWidget30,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            widget.loadingMsg,
+          ),
+        ],
+      ) : SizedBox(
+        width: 30,
+        height: 30,
+        child: loadingWidget30,
+      ),
     );
   }
 
@@ -347,7 +293,7 @@ class _LoadMoreState extends State<LoadMore> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Icon(
+           const Icon(
               Icons.error,
               color: Colors.red,
               size: 20,
@@ -380,7 +326,7 @@ class _LoadMoreState extends State<LoadMore> {
               color: Colors.grey,
             ),
           ),
-          const SizedBox(width: 6),
+         const SizedBox(width: 6),
           Text(
             widget.finishMsg,
             style: const TextStyle(
@@ -388,7 +334,7 @@ class _LoadMoreState extends State<LoadMore> {
               color: Colors.grey,
             ),
           ),
-          const SizedBox(width: 6),
+         const SizedBox(width: 6),
           const SizedBox(
             width: 10,
             child: Divider(
@@ -402,8 +348,8 @@ class _LoadMoreState extends State<LoadMore> {
 
   ///计算加载更多
   bool _handleNotification(ScrollNotification notification) {
-    if (notification.metrics.axis == Axis.horizontal &&
-        !widget.triggerHorizontalScroll) {
+
+    if(notification.metrics.axis == Axis.horizontal && !widget.triggerHorizontalScroll) {
       return false;
     }
     //当前滚动距离

@@ -21,43 +21,89 @@ Future initServices() async {
   getIt.registerSingleton(HomeController());
   AppFlavor().init(AppFlavors.development);
   FlutterUtil.initialize(
-      loaderSmall: const SpinKitCircle(color: Colors.blue),
-      loaderMedium: const SpinKitCircle(color: Colors.blue),
-      loaderLarge: const SpinKitCircle(color: Colors.blue,),
-      imagesError: "assets/images/empty.png",
-      imagesNoInternet: "assets/images/empty.png",
-      imagesNoResults: "assets/images/empty.png",
-      // imagesSuccess: "assets/images/empty.png",
+    loaderSmall: const SpinKitCircle(color: Colors.blue),
+    loaderMedium: const SpinKitCircle(color: Colors.blue),
+    loaderLarge: const SpinKitCircle(color: Colors.blue),
+    imagesError: "assets/images/empty.png",
+    imagesNoInternet: "assets/images/empty.png",
+    imagesNoResults: "assets/images/empty.png",
   );
   await Future.delayed(const Duration(milliseconds: 10));
 }
 
-class HomeController extends BaseController{
+class HomeController extends BaseController {
   int _counter = 0;
   String _title = "Hello";
 
   String get title => _title;
   int get counter => _counter;
 
-  set title(String newTitle){
+  set title(String newTitle) {
     _title = newTitle;
     notifyListeners();
   }
 
-  set counter(int counter){
+  set counter(int counter) {
     _counter = counter;
     notifyListeners();
   }
 
-  showDialog(){
-    getContext()?.showSimpleCustomDialog(title: 'title', description: 'description');
+  showDialog() {
+    getContext()
+        ?.showSimpleCustomDialog(title: 'title', description: 'description');
   }
 
-  nextPage(){
+  nextPage() {
     getContext()?.goNamed(AppRoute.secondPage);
   }
 
+  LoadStatus initialStatus = LoadStatus.loading;
+  LoadStatus loadMoreStatus = LoadStatus.idle;
+  final List<Item> items = [];
+  int _currentPage = 0;
 
+  Future<void> loadInitial() async {
+    initialStatus = LoadStatus.loading;
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 2)); // Simulate API call
+
+    items.clear();
+    items.addAll(List.generate(
+      20,
+      (index) => Item(
+        id: index + 1,
+        title: 'Initial Item ${index + 1}',
+      ),
+    ));
+
+    initialStatus = LoadStatus.initialLoadSuccess;
+    notifyListeners();
+  }
+
+  Future<void> loadMore() async {
+    if (loadMoreStatus == LoadStatus.loading) return;
+
+    loadMoreStatus = LoadStatus.loading;
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 1)); // Simulate API call
+
+    _currentPage++;
+    final newItems = List.generate(
+      10,
+      (index) => Item(
+        id: items.length + index + 1,
+        title: 'Page $_currentPage - Item ${index + 1}',
+      ),
+    );
+
+    items.addAll(newItems);
+
+    loadMoreStatus =
+        items.length >= 50 ? LoadStatus.completed : LoadStatus.idle;
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -66,98 +112,100 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
         designSize: ScreenUtil.defaultSize,
-        builder:  (context,child) => MaterialApp.router(
-      title: 'Flutter Demo',
-          routerConfig: AppRoute.router,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        appBarTheme: AppBarTheme(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
-        // titleTextStyle: TextStyle(fontFamily: fontBreeSerif,color: Colors.black, fontSize: 28, fontWeight: FontWeight.w900)),
-        systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.white,
-            // navigation bar color
-            statusBarColor: Colors.transparent,
-            statusBarBrightness: Brightness.light,
-            systemNavigationBarIconBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark),
-        titleTextStyle: GoogleFonts.montserrat(
-            color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w800),
-      ),
-        useMaterial3: true,
-      ),
-          builder: (context,widget)=>FlavorBanner(child: widget ?? Container()),
-    ));
+        builder: (context, child) => MaterialApp.router(
+              title: 'Flutter Demo',
+              routerConfig: AppRoute.router,
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                appBarTheme: AppBarTheme(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  iconTheme: const IconThemeData(color: Colors.black),
+                  // titleTextStyle: TextStyle(fontFamily: fontBreeSerif,color: Colors.black, fontSize: 28, fontWeight: FontWeight.w900)),
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                      systemNavigationBarColor: Colors.white,
+                      // navigation bar color
+                      statusBarColor: Colors.transparent,
+                      statusBarBrightness: Brightness.light,
+                      systemNavigationBarIconBrightness: Brightness.dark,
+                      statusBarIconBrightness: Brightness.dark),
+                  titleTextStyle: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w800),
+                ),
+                useMaterial3: true,
+              ),
+              builder: (context, widget) =>
+                  FlavorBanner(child: widget ?? Container()),
+            ));
   }
 }
 
-
-class MyHomePage extends StatelessView<HomeController> {
-
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // logInfo("DARKMODE: ${controller.isDarkMode}");
-    return  StyledToast(
-        backgroundColor: Colors.blue,
-        borderRadius: BorderRadius.circular(30),
-    toastAnimation: StyledToastAnimation.slideFromTop,
-    toastPositions: StyledToastPosition.top,
-    duration: const Duration(milliseconds: 4000),
-    locale: const Locale('en', 'US'),
-    child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(controller.title),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              CustomTextButton(onTap: (){}, label: "Primary",icon: Ionicons.person,),
-              CustomTextButton.secondary(onTap: (){
-                context.showOptionsDialog(title: 'Some Price', options: ['option1','option2','option3'], onOptionClick: (option){
-                  logInfo(option);
-                });
-              }, label: "Secondary",icon: Ionicons.chatbox),
-              CustomTextButton.tertiary(onTap: controller.showDialog, label: "Tertiary",icon: Ionicons.chatbox),
-              CustomTextButton(onTap: controller.nextPage, label: "Second Page",icon: Ionicons.person,).paddingSymmetric(vertical: 10),
-              CustomTextButton(onTap: (){}, label: 'Login'),
-              ReactiveWidget<HomeController>(builder: (context,controller)=>Text(
-                '${controller.counter}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              )),
-              10.verticalSpace,
-              CustomCard(
-                  onTap: (){
-                    // context.showErrorDialog(title: "SomeTitle d56ftygui gtyuhi",description: "srzdxfcgh");
-                    context.showOptionsDialog(title: 'Some title', options: ['Option 1','Option 2'], onOptionClick: (option){});
-                  },
-                  child: Text('My Card').paddingAll(15))
-            ],
-          ).paddingAll(16),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          // controller.showDialog();
-          // context.showSuccessDialog(title: "Simple");
-          // context.showNoInternetDialog();
-          context.go('dfdfdf');
-        },//()=>controller.counter++,
-        tooltip: 'navigate',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    ));
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final controller = getIt<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.loadInitial();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Animated Load More Demo'),
+      ),
+      body: ReactiveWidget<HomeController>(
+        builder: (context, controller) {
+          return LoadMore(
+            status: controller.loadMoreStatus,
+            initialStatus: controller.initialStatus,
+            onLoadMore: controller.loadMore,
+            onRefresh: controller.loadInitial,
+            animateNewItems: true, // Enable animations
+            staggerDuration: const Duration(milliseconds: 50),
+            animationDuration: const Duration(milliseconds: 400),
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = controller.items[index];
+                      return Card(
+                        margin: const EdgeInsets.all(8),
+                        child: ListTile(
+                          title: Text('Item ${item.id}'),
+                          subtitle: Text(item.title),
+                        ),
+                      );
+                    },
+                    childCount: controller.items.length,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// Mock Item Model
+class Item {
+  final int id;
+  final String title;
+
+  Item({required this.id, required this.title});
 }

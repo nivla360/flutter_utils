@@ -82,6 +82,9 @@ class LoadMore extends StatefulWidget {
   /// Whether to animate new items when they are added
   final bool animateNewItems;
 
+  /// Empty state
+  final Widget? emptyState;
+
   /// Duration for the stagger effect between item animations
   final Duration? staggerDuration;
 
@@ -95,6 +98,7 @@ class LoadMore extends StatefulWidget {
     required this.onLoadMore,
     this.initialApiCall,
     this.onRefresh,
+    this.emptyState,
     this.endLoadMore = true,
     this.triggerHorizontalScroll = false,
     this.bottomTriggerDistance = 200,
@@ -238,10 +242,11 @@ class _LoadMoreState extends State<LoadMore> {
           onRetry: widget.initialApiCall ?? widget.onRefresh,
         );
       case LoadStatus.initialLoadEmpty:
-        return ErrorView.noResult(
-          isChat: widget.isChat,
-          onRetry: widget.initialApiCall ?? widget.onRefresh,
-        );
+        return widget.emptyState ??
+            ErrorView.noResult(
+              isChat: widget.isChat,
+              onRetry: widget.initialApiCall ?? widget.onRefresh,
+            );
       case LoadStatus.error:
         return ErrorView(onRetry: widget.initialApiCall ?? widget.onRefresh);
       default:

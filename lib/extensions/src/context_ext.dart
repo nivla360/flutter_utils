@@ -31,6 +31,10 @@ extension ContextExt on BuildContext {
 
   bool get isDarkMode => brightness == Brightness.dark;
 
+  bool get isOSDarkMode => brightness == Brightness.dark;
+  
+  bool get isAppDarkMode => theme.brightness == Brightness.dark;
+
   TextStyle? get appBarTitleStyle => theme.appBarTheme.titleTextStyle;
 
   TextTheme? get textTheme => theme.textTheme;

@@ -334,6 +334,7 @@ extension ContextExt on BuildContext {
               negativeButtonLabel,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color: isDarkMode || isAppDarkMode ? Colors.white : Colors.black,
               ),
             ),
           ),

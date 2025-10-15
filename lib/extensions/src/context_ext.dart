@@ -77,6 +77,7 @@ extension ContextExt on BuildContext {
   Future<dynamic> showCustomModal({
     String? title,
     Widget? bottomButton,
+    double? height,
     EdgeInsetsGeometry padding = const EdgeInsets.all(15),
     List<Widget> actions = const [],
     required Widget child,
@@ -85,6 +86,7 @@ extension ContextExt on BuildContext {
   return  _showBottomSheet(
       child: CustomModal(
           title: title,
+          height: height,
           bottomButton: bottomButton,
           padding: padding,
           actions: actions,

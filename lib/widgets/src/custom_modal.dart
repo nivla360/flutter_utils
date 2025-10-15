@@ -8,12 +8,14 @@ class CustomModal extends StatelessWidget {
   final Widget? bottomButton;
   final EdgeInsetsGeometry padding;
   final List<Widget> actions;
+  final double? height;
   final Widget child;
 
   const CustomModal(
       {required this.child,
         this.title,
         this.actions = const [],
+        this.height,
         this.padding = const EdgeInsets.all(15),
         this.bottomButton,
         Key? key})
@@ -28,7 +30,7 @@ class CustomModal extends StatelessWidget {
           topRight: borderRadius, topLeft: borderRadius),
       child: Container(
         color: context.theme.scaffoldBackgroundColor,
-        height: context.height * .85,
+        height: height ?? (context.height * .85),
         padding: padding,
         child: (title == null && bottomButton == null)
             ? child

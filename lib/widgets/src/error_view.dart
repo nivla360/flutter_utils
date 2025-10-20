@@ -15,6 +15,7 @@ class ErrorView extends StatelessWidget {
   final VoidCallback? onRetry;
   final bool isChat;
   final String? imageAsset,title,subtitle,retryButtonLabel;
+  final IconData? icon;
   final double imageSize;
 
   const ErrorView(
@@ -24,7 +25,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.retryButtonLabel = 'Retry',
   this.title,this.subtitle,
-      this.imageAsset})
+      this.imageAsset, this.icon})
       : _errorType = _ErrorType.generalError,
         super(key: key);
 
@@ -35,6 +36,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.retryButtonLabel = 'Retry',
         this.title,this.subtitle,
+        this.icon,
       this.imageAsset})
       : _errorType = _ErrorType.noInternet,
         super(key: key);
@@ -46,7 +48,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.title,this.subtitle,
         this.retryButtonLabel = 'Retry',
-      this.imageAsset})
+      this.imageAsset, this.icon,})
       : _errorType = _ErrorType.noResults,
         super(key: key);
 
@@ -57,7 +59,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.title,this.subtitle,
         this.retryButtonLabel = 'Retry',
-      this.imageAsset})
+      this.imageAsset, this.icon,})
       : _errorType = _ErrorType.onLoadMoreError,
         super(key: key);
 
@@ -100,7 +102,7 @@ class ErrorView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PlatformImageAsset(
+                icon != null ? Icon(icon, size: imageSize,) : PlatformImageAsset(
                     imageAsset ?? _image ?? imagesErrorPath,//Assets.images.error.path,
                     width: imageSize,
                     height: imageSize / 1.2,

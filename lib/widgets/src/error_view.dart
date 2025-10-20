@@ -16,6 +16,7 @@ class ErrorView extends StatelessWidget {
   final bool isChat;
   final String? imageAsset,title,subtitle,retryButtonLabel;
   final IconData? icon;
+  final Color? iconColor;
   final double imageSize;
 
   const ErrorView(
@@ -25,7 +26,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.retryButtonLabel = 'Retry',
   this.title,this.subtitle,
-      this.imageAsset, this.icon})
+      this.imageAsset, this.icon, this.iconColor})
       : _errorType = _ErrorType.generalError,
         super(key: key);
 
@@ -37,6 +38,7 @@ class ErrorView extends StatelessWidget {
         this.retryButtonLabel = 'Retry',
         this.title,this.subtitle,
         this.icon,
+        this.iconColor,
       this.imageAsset})
       : _errorType = _ErrorType.noInternet,
         super(key: key);
@@ -48,7 +50,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.title,this.subtitle,
         this.retryButtonLabel = 'Retry',
-      this.imageAsset, this.icon,})
+      this.imageAsset, this.icon, this.iconColor,})
       : _errorType = _ErrorType.noResults,
         super(key: key);
 
@@ -59,7 +61,7 @@ class ErrorView extends StatelessWidget {
       this.isChat = false,
         this.title,this.subtitle,
         this.retryButtonLabel = 'Retry',
-      this.imageAsset, this.icon,})
+      this.imageAsset, this.icon, this.iconColor,})
       : _errorType = _ErrorType.onLoadMoreError,
         super(key: key);
 
@@ -102,7 +104,12 @@ class ErrorView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                icon != null ? Icon(icon, size: imageSize,) : PlatformImageAsset(
+                icon != null ? Container(
+                  decoration: BoxDecoration(
+                    color: iconColor?.withValues(alpha: 0.1) ?? Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(imageSize / 2),
+                  ),
+                  child: Icon(icon, size: imageSize,color: iconColor ?? context.theme.primaryColor,),).paddingOnly(bottom: 16) : PlatformImageAsset(
                     imageAsset ?? _image ?? imagesErrorPath,//Assets.images.error.path,
                     width: imageSize,
                     height: imageSize / 1.2,

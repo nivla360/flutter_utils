@@ -118,13 +118,13 @@ class ErrorView extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: iconColor?.withValues(alpha: 0.1) ??
                                 Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(imageSize / 2),
+                            borderRadius: BorderRadius.circular(imageSize),
                           ),
                           child: Icon(
                             icon,
                             size: imageSize,
                             color: iconColor ?? context.theme.primaryColor,
-                          ).paddingAll(16),
+                          ).paddingAll(20),
                         ).paddingOnly(bottom: 16)
                       : PlatformImageAsset(
                           imageAsset ??

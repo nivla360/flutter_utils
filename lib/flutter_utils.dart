@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'util/src/constant.dart';
 
 export 'state_management/state_management.dart';
+export 'services/services.dart';
+export 'extensions/extensions.dart';
+export 'widgets/widgets.dart';
+export 'util/util.dart';
 export 'package:get_it/get_it.dart';
 export 'package:go_router/go_router.dart';
 export 'package:google_fonts/google_fonts.dart';
@@ -12,6 +16,7 @@ export 'package:flutter_spinkit/flutter_spinkit.dart';
 export 'package:ionicons/ionicons.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:flutter_styled_toast/flutter_styled_toast.dart';
+export 'package:logger/logger.dart';
 
 
 class FlutterUtil {

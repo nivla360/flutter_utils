@@ -1,62 +1,21 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
 # Flutter Utils
 
-A comprehensive Flutter utility package that provides a collection of helpful tools, extensions, and widgets to accelerate Flutter development. This package includes various utilities for common tasks, making Flutter development more efficient and maintainable.
+A comprehensive Flutter utility package that provides modern tools, extensions, widgets, and services to accelerate Flutter development with minimal boilerplate code. Built with 2025 Flutter best practices.
 
-## Features
+## ✨ What's New (v0.1.0)
 
-- 🛠️ **Utility Functions**
+- 🎯 **Write 80% Less Code** - High-level widgets and utilities for common patterns
+- ⚡ **Modern State Management** - Enhanced controllers with async state and persistence
+- 🎨 **Advanced UI Components** - Skeleton loaders, smart forms, quick widgets
+- 🌐 **Complete Service Layer** - HTTP client, storage wrapper, and more
+- 🔧 **Powerful Extensions** - DateTime, validation, and utility extensions
+- 📱 **Material 3 Ready** - Modern design system support
 
-  - File size formatting
-  - String manipulation
-  - URL handling
-  - Clipboard operations
-  - Network connectivity checks
-  - Number formatting
-  - Date formatting
-  - Logging utilities
-  - And more!
+## 🚀 Quick Start
 
-- 🎨 **Extensions**
+### Installation
 
-  - String extensions (color conversion, validation helpers)
-  - Number extensions (spacing widgets, duration conversions)
-  - BuildContext extensions (responsive design helpers, theme access)
-  - And more!
-
-- 📱 **Pre-configured Dependencies**
-
-  - `get_it` for dependency injection
-  - `go_router` for navigation
-  - `google_fonts` for typography
-  - `flutter_spinkit` for loading indicators
-  - `ionicons` for icons
-  - `flutter_screenutil` for responsive design
-  - `flutter_styled_toast` for toast messages
-  - `flutter_animate` for animations
-
-- 🔧 **Common Constants**
-  - Border radius presets
-  - Padding presets
-  - Spacing widgets
-  - Dividers
-  - Error messages
-
-## Getting Started
-
-Add the package to your `pubspec.yaml`:
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -65,168 +24,14 @@ dependencies:
       url: https://github.com/nivla360/flutter_utils.git
 ```
 
-## Usage
-
-### Initialize the Package
+### Basic Setup
 
 ```dart
 import 'package:flutter_utils/flutter_utils.dart';
 
-void main() {
-  FlutterUtil.initialize(
-    loaderSmall: const SpinKitCircle(color: Colors.blue),
-    loaderMedium: const SpinKitCircle(color: Colors.blue),
-    loaderLarge: const SpinKitCircle(color: Colors.blue),
-    imagesError: "assets/images/error.png",
-    imagesNoInternet: "assets/images/no_internet.png",
-    imagesNoResults: "assets/images/no_results.png",
-  );
-}
-```
-
-### Using Utility Functions
-
-```dart
-// String utilities
-String formattedSize = getHumanReadableFileSize(fileLength: 1024576); // "1.00 MB"
-bool isValidEmail = "test@example.com".isValidEmail(); // true
-
-// Network utilities
-bool connected = await isConnected();
-
-// Number formatting
-String shortened = shortenLargeNumber(1500000); // "1.5M"
-
-// Clipboard operations
-await copyText("Text to copy");
-```
-
-### Using Extensions
-
-```dart
-// Context extensions
-context.height;  // screen height
-context.width;   // screen width
-context.screenIsMobile;  // check if screen is mobile
-context.theme;   // get theme data
-
-// Number extensions
-10.vs;  // vertical space of 10 logical pixels
-20.hs;  // horizontal space of 20 logical pixels
-5.seconds;  // Duration of 5 seconds
-
-// String extensions
-"#FF0000".toColor();  // converts hex to Color
-```
-
-### Using Pre-defined Constants
-
-```dart
-// Border radius
-borderRadiusFifteen;  // BorderRadius.circular(15)
-borderRadiusTen;      // BorderRadius.circular(10)
-
-// Padding
-paddingAllTwenty;     // EdgeInsets.all(20)
-paddingAllFifteen;    // EdgeInsets.all(15)
-
-// Spacing
-verticalSpaceTen;     // SizedBox(height: 10)
-horizontalSpaceFive;  // SizedBox(width: 5)
-```
-
-### Using State Management
-
-The package provides a custom lightweight state management solution that follows a controller-based pattern with reactive widgets for efficient UI updates.
-
-#### Basic Structure
-
-- `RootController`: Base controller class that provides state management capabilities
-- `BaseController`: Extended controller with navigation and utility methods
-- `ReactiveWidget`: Widget that rebuilds when controller state changes
-- `StatelessView`: Base class for views with typed controller access
-
-#### Setting up Base Controller
-
-The `BaseController` extends `RootController` and provides common functionality for all controllers in your app:
-
-```dart
-class BaseController extends RootController {
-  // Access to router for navigation
-  GoRouter router = AppRoute.router;
-
-  // Get current BuildContext
-  BuildContext? getContext() {
-    return router.configuration.navigatorKey.currentContext;
-  }
-
-  // Add any other common functionality needed across controllers
-  // For example:
-  // - Common API calls
-  // - Shared business logic
-  // - Navigation methods
-  // - Error handling
-}
-
-// Then extend BaseController in your feature controllers
-class HomeController extends BaseController {
-  // Your controller implementation
-}
-
-class ProfileController extends BaseController {
-  // Your controller implementation
-}
-```
-
-For a complete setup with navigation and dependency injection:
-
-```dart
-// app_route.dart
-class AppRoute {
-  static const String initialRoute = '/';
-  static const String secondPage = 'secondPage';
-
-  static final GoRouter router = GoRouter(
-    debugLogDiagnostics: true,
-    errorBuilder: (context, state) => const NotFoundPage(),
-    routes: [
-      GoRoute(
-        path: initialRoute,
-        name: initialRoute,
-        builder: (_, __) => const MyHomePage(),
-        routes: [
-          GoRoute(
-            path: secondPage,
-            name: secondPage,
-            builder: (_, __) => const SecondPage()
-          )
-        ]
-      )
-    ]
-  );
-}
-
-// main.dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await initServices();
-  runApp(const MyApp());
-}
-
-Future<void> initServices() async {
-  final getIt = GetIt.instance;
-
-  // Register your app's router
-  getIt.registerSingleton(AppRoute.router);
-
-  // Register controllers
-  getIt.registerSingleton(HomeController());
-  getIt.registerSingleton(ProfileController());
-
-  // Set up app flavor (optional)
-  AppFlavor().init(AppFlavors.development);
-
+  
   // Initialize the package
   FlutterUtil.initialize(
     loaderSmall: const SpinKitCircle(color: Colors.blue),
@@ -236,168 +41,257 @@ Future<void> initServices() async {
     imagesNoInternet: "assets/images/no_internet.png",
     imagesNoResults: "assets/images/no_results.png",
   );
+  
+  // Initialize services
+  await ApiService().initialize(ApiServiceConfig(
+    baseUrl: 'https://api.example.com',
+  ));
+  await StorageService.instance.initialize();
+  
+  runApp(MyApp());
 }
 ```
 
-#### Controller Implementation
+## 📱 Core Features
+
+### 1. **Enhanced State Management**
+
+Modern controllers with async state handling and automatic persistence:
 
 ```dart
-class DevotionalController extends BaseController {
-  // State variables
-  LoadStatus initialStatus = LoadStatus.loading;
-  LoadStatus loadMoreStatus = LoadStatus.idle;
-  final List<DevotionModel> itemList = [];
-  DevotionModel? newest;
-
-  // Lifecycle method - called after initialization
+class UserController extends AsyncController<User> {
   @override
-  void onReady() {
-    loadInitial();
-    super.onReady();
+  String get persistenceKey => 'user_data';
+  
+  Future<void> loadUser(String userId) async {
+    await executeAsync(() => ApiService().get<User>('/users/$userId'));
   }
-
-  // Business Logic
-  Future<void> loadInitial() async {
-    initialStatus = LoadStatus.loading;
-    notifyListeners(); // Trigger UI update
-
-    // API call or data fetching
-    final response = await _apiService.getInitial();
-
-    if (response.isSuccess) {
-      itemList.clear();
-      itemList.addAll(response.data);
-      _loadNewest();
-    }
-
-    initialStatus = LoadStatus.success;
-    notifyListeners(); // Trigger UI update
-  }
-
-  // More methods...
 }
+
+// In your widget
+AsyncBuilder<UserController>(
+  controller: GetIt.instance<UserController>(),
+  onLoading: (context, controller) => SkeletonShapes.circle(size: 50),
+  onSuccess: (context, controller) => Text(controller.data?.name ?? ''),
+  onError: (context, controller) => Text(controller.errorMessage ?? ''),
+)
 ```
 
-#### View Implementation
+### 2. **Quick Widgets - Write Less Code**
 
-There are two ways to implement views:
-
-1. Using `StatelessView`:
+Replace verbose widget trees with one-liners:
 
 ```dart
-class DevotionPage extends StatelessView<DevotionalController> {
-  const DevotionPage({super.key});
+// Before: 15+ lines of Card with padding, shadow, etc.
+QuickCard(
+  child: Text('Hello World'),
+  onTap: () => print('Tapped'),
+)
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // Reactive section that updates when state changes
-          ReactiveWidget<DevotionalController>(
-            builder: (context, controller) {
-              final latestDevotion = controller.newest;
+// Before: Complex ListTile with avatar logic
+QuickListTile.avatar(
+  title: 'John Doe',
+  subtitle: 'Software Engineer',
+  avatarUrl: 'https://example.com/avatar.jpg',
+  onTap: () => navigateToProfile(),
+)
 
-              return latestDevotion == null
-                  ? shrinkedSizedBox
-                  : DevotionCard(devotion: latestDevotion);
-            }
-          ),
-
-          // Another reactive section
-          ReactiveWidget<DevotionalController>(
-            builder: (context, controller) {
-              if (controller.initialStatus == LoadStatus.loading) {
-                return LoadingIndicator();
-              }
-              return DevotionContent(devotion: controller.newest);
-            }
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Before: Multiple ElevatedButton configurations
+QuickButton(
+  text: 'Login',
+  icon: Icons.login,
+  style: QuickButtonStyle.primary,
+  isLoading: isLoading,
+  onPressed: handleLogin,
+)
 ```
 
-2. Using Regular StatelessWidget with ReactiveWidget:
+### 3. **Smart Form Builder**
+
+Declarative forms with built-in validation:
 
 ```dart
-class HistoryTab extends StatelessWidget {
-  const HistoryTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ReactiveWidget<DevotionalController>(
-      builder: (context, controller) {
-        return LoadMore(
-          status: controller.loadMoreStatus,
-          onRefresh: controller.loadInitial,
-          initialStatus: controller.initialStatus,
-          onLoadMore: controller.loadMore,
-          child: DevotionList(items: controller.itemList),
-        );
-      }
-    );
-  }
-}
+SmartFormBuilder(
+  fields: [
+    FormFieldConfig(
+      key: 'email',
+      label: 'Email',
+      type: FormFieldType.email,
+      required: true,
+      validators: [EmailValidator(), RequiredValidator()],
+    ),
+    FormFieldConfig(
+      key: 'password',
+      label: 'Password',
+      type: FormFieldType.password,
+      required: true,
+      validators: [MinLengthValidator(8)],
+    ),
+  ],
+  onSubmit: (values) => print(values),
+  showSubmitButton: true,
+)
 ```
 
-#### State Updates
+### 4. **Advanced Extensions**
 
-To update the UI:
-
-1. Modify your state variables
-2. Call `notifyListeners()`
-3. All `ReactiveWidget`s listening to the controller will rebuild
+Powerful extensions that eliminate repetitive code:
 
 ```dart
-class MyController extends BaseController {
-  String _message = '';
-  String get message => _message;
+// DateTime extensions
+final date = DateTime.now();
+print(date.smart); // "2 hours ago" or "Today 3:30 PM"
+print(date.isToday); // true/false
+print(date.nextBusinessDay); // Skips weekends
 
-  void updateMessage(String newMessage) {
-    _message = newMessage;
-    notifyListeners(); // Triggers rebuild of ReactiveWidgets
-  }
-}
+// Validation extensions
+'user@example.com'.isValidEmail; // true
+'password123'.isStrongPassword; // false
+'+1234567890'.isValidPhone; // true
+
+// Widget extensions
+Text('Hello').paddingAll(16).center().onTap(() => print('Tapped'))
 ```
 
-#### Lifecycle Management
+### 5. **Complete API Service**
 
-Controllers provide lifecycle hooks:
-
-- `onInit`: Called when the controller is first created
-- `onReady`: Called after the widget tree is built
-- `dispose`: Called when the controller is disposed
-
-For full app lifecycle management, use `FullLifeCycleController`:
+HTTP client with retry logic, caching, and interceptors:
 
 ```dart
-class AppController extends FullLifeCycleController with FullLifeCycleMixin {
-  @override
-  void onResumed() => print('App in foreground');
-
-  @override
-  void onPaused() => print('App in background');
-
-  @override
-  void onInactive() => print('App inactive');
-
-  @override
-  void onDetached() => print('App detached');
-
-  @override
-  void onMinimised() => print('App minimized');
+// Simple usage
+final response = await ApiService().get<User>('/user/123');
+if (response.isSuccess) {
+  print(response.data?.name);
 }
+
+// With caching and custom config
+final posts = await ApiService().get<List<Post>>(
+  '/posts',
+  cacheStrategy: CacheStrategy.cacheFirst,
+  fromJson: (json) => (json['data'] as List)
+    .map((item) => Post.fromJson(item))
+    .toList(),
+);
 ```
 
-## Additional Information
+### 6. **Type-Safe Storage**
 
-### Contributing
+SharedPreferences wrapper with advanced features:
 
-Contributions are welcome! If you find a bug or want to add new features, please feel free to open an issue or submit a pull request.
+```dart
+// Simple operations
+await StorageService.instance.setString('username', 'john_doe');
+final username = StorageService.instance.getString('username');
 
-### License
+// JSON objects
+await StorageService.instance.setJson('user', user.toJson());
+final user = StorageService.instance.getJson('user');
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+// Typed objects with TTL cache
+await StorageService.instance.setCache('posts', posts, ttl: Duration(hours: 1));
+final cachedPosts = StorageService.instance.getCache('posts');
+```
+
+### 7. **Loading States Made Easy**
+
+Modern skeleton loaders and empty states:
+
+```dart
+// Skeleton loading
+SkeletonLayouts.listTile(showAvatar: true, showSubtitle: true)
+SkeletonLayouts.card(imageHeight: 200)
+SkeletonShapes.circle(size: 50)
+
+// Empty states
+QuickEmptyState(
+  title: 'No messages yet',
+  subtitle: 'Start a conversation',
+  icon: Icons.message,
+  action: QuickButton(
+    text: 'New Message',
+    onPressed: () => createMessage(),
+  ),
+)
+```
+
+## 📚 Detailed Documentation
+
+For comprehensive examples and advanced usage:
+
+- **[State Management Guide](docs/STATE_MANAGEMENT.md)** - Controllers, persistence, lifecycle
+- **[Widgets Reference](docs/WIDGETS.md)** - Complete widget catalog with examples
+- **[Extensions Guide](docs/EXTENSIONS.md)** - All available extensions and utilities
+- **[Services Documentation](docs/SERVICES.md)** - API client, storage, and more
+- **[Migration Guide](docs/MIGRATION.md)** - Upgrading from previous versions
+
+## 🎯 Key Benefits
+
+### Write 80% Less Code
+- **Before**: 50 lines for a loading list with empty states
+- **After**: 5 lines with `QuickListBuilder`
+
+### Smart Defaults
+- Material 3 design system integration
+- Responsive design out of the box
+- Error handling and logging built-in
+
+### Type Safety
+- Compile-time validation for forms
+- Type-safe storage operations
+- Generic async controllers
+
+### Modern Patterns
+- Declarative UI approach
+- Reactive state management
+- Composable utilities
+
+## 📦 What's Included
+
+### State Management
+- `AsyncController` - Async state handling
+- `PersistentController` - Automatic state persistence
+- `ReactiveWidget` - Declarative UI updates
+- `AsyncBuilder` - Loading state management
+
+### UI Components
+- `QuickCard`, `QuickButton`, `QuickListTile`
+- `SmartFormBuilder` - Declarative forms
+- `SkeletonLoader` - Modern loading states
+- `QuickEmptyState` - Empty state handling
+
+### Extensions
+- **DateTime**: 50+ utilities for date operations
+- **Validation**: Email, phone, password, credit card validation
+- **String**: Color conversion, formatting, sanitization
+- **Widget**: Padding, gestures, styling shortcuts
+
+### Services
+- **ApiService**: HTTP client with caching and retry logic
+- **StorageService**: Type-safe SharedPreferences wrapper
+- **Logger**: Consistent logging throughout the app
+
+### Pre-configured Dependencies
+- Material 3 design system
+- Navigation with `go_router`
+- Dependency injection with `get_it`
+- Typography with `google_fonts`
+- Responsive design with `flutter_screenutil`
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- [API Documentation](https://pub.dev/documentation/flutter_utils/latest/)
+- [GitHub Repository](https://github.com/nivla360/flutter_utils)
+- [Issue Tracker](https://github.com/nivla360/flutter_utils/issues)
+- [Changelog](CHANGELOG.md)
+
+---
+
+**Flutter Utils** - Write less, achieve more! 🚀

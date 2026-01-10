@@ -10,3 +10,6 @@ export './src/custom_text_button.dart';
 export './src/flavor_banner.dart';
 export './src/parallax_carousel.dart';
 export './src/custom_card.dart';
+export './src/skeleton_loader.dart';
+export './src/smart_form_builder.dart';
+export './src/quick_widgets.dart';

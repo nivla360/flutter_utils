@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,18 +19,18 @@ final logger = Logger();
 String shortenLargeNumber(int number) {
   try {
     if (number >= 1000000000) {
-        // Billion and more
-        return '${(number / 1000000000).toStringAsFixed(1)} B';
-      } else if (number >= 1000000) {
-        // Million and more
-        return '${(number / 1000000).toStringAsFixed(1)} M';
-      } else if (number >= 1000) {
-        // Thousand and more
-        return '${(number / 1000).toStringAsFixed(1)} K';
-      } else {
-        // Less than 1000
-        return number.toString();
-      }
+      // Billion and more
+      return '${(number / 1000000000).toStringAsFixed(1)} B';
+    } else if (number >= 1000000) {
+      // Million and more
+      return '${(number / 1000000).toStringAsFixed(1)} M';
+    } else if (number >= 1000) {
+      // Thousand and more
+      return '${(number / 1000).toStringAsFixed(1)} K';
+    } else {
+      // Less than 1000
+      return number.toString();
+    }
   } catch (e) {
     return '0';
   }
@@ -46,16 +44,15 @@ int colorFromHex(String hexColor) {
   return int.parse('0x$hexColor');
 }
 
-
-logInfo(data,{StackTrace? stackTrace}){
+logInfo(data, {StackTrace? stackTrace}) {
   if (AppFlavor.instance.flavor == AppFlavors.development) {
-    logger.i(data,stackTrace: stackTrace);
+    logger.i(data, stackTrace: stackTrace);
   }
 }
 
-logError(data,{StackTrace? stackTrace}){
+logError(data, {StackTrace? stackTrace}) {
   if (AppFlavor.instance.flavor == AppFlavors.development) {
-    logger.e(data,stackTrace: stackTrace);
+    logger.e(data, stackTrace: stackTrace);
   }
 }
 
@@ -94,7 +91,6 @@ Future<bool> isConnected() async {
   return finalResult;
 }
 
-
 copyText(String text) async {
   try {
     await Clipboard.setData(ClipboardData(text: text));
@@ -120,7 +116,8 @@ bool textIsNumeric(String? s, {bool isDouble = false, String? ignoreChar}) {
   }
 }
 
-String getHumanReadableFileSize({required int fileLength, int decimalPlaces = 2}) {
+String getHumanReadableFileSize(
+    {required int fileLength, int decimalPlaces = 2}) {
   double kBSize = fileLength / 1024;
   double mBSize = kBSize / 1024;
   return mBSize > 1
@@ -137,10 +134,11 @@ num getFileSizeKB({@required fileLength}) {
   return (fileLength / 1024).round();
 }
 
-void openUrl(String url,{LaunchMode mode = LaunchMode.platformDefault}) async {
+void openUrl(String url, {LaunchMode mode = LaunchMode.platformDefault}) async {
   try {
     final uri = Uri.parse(url);
-    if (!await launchUrl(uri,mode: mode)) showErrorToast('Sorry, unable to load page');
+    if (!await launchUrl(uri, mode: mode))
+      showErrorToast('Sorry, unable to load page');
   } catch (e) {
     showErrorToast('Sorry, unable to load page');
   }
@@ -178,7 +176,7 @@ String getStrapiAPIErrorMessage(Map<String, dynamic> data) {
 //   return '$title${title.isNotEmpty ? ', ' : ''}$message';
 // }
 
-hideKeyboard(){
+hideKeyboard() {
   try {
     FocusManager.instance.primaryFocus?.unfocus();
   } catch (e) {
@@ -186,12 +184,14 @@ hideKeyboard(){
   }
 }
 
-hideKeyboardNative(){
+hideKeyboardNative() {
   SystemChannels.textInput.invokeMethod('TextInput.hide');
 }
 
 sendEmail(
-    {required String subject,required String email, String body = 'Hello,\n\n'}) async {
+    {required String subject,
+    required String email,
+    String body = 'Hello,\n\n'}) async {
   try {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
@@ -213,10 +213,9 @@ sendEmail(
 String encodeQueryParameters(Map<String, String> params) {
   return params.entries
       .map((MapEntry<String, String> e) =>
-  '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
       .join('&');
 }
-
 
 void printWrapped(String text) {
   final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
@@ -228,14 +227,14 @@ void prettyPrintJson(object) {
   printWrapped(prettyString);
 }
 
-
 String getHumanReadableDateFromString(String timeStamp,
     {bool addWeekDay = false,
-      bool addTimeOfDay = false,
-      bool useTimeAgo = false,
-      bool isOnlyTimeOfDay = false}) {
+    bool addTimeOfDay = false,
+    bool useTimeAgo = false,
+    bool isOnlyTimeOfDay = false}) {
   try {
-    final DateTime dateTime = DateTime.parse(timeStamp);
+    // Parse the date string, handling date-only strings specially to avoid timezone issues
+    final DateTime dateTime = _parseDateString(timeStamp);
     final now = DateTime.now();
     if (useTimeAgo) {
       return (addTimeOfDay ? '${jmFormat.format(dateTime)}, ' : '') +
@@ -246,17 +245,49 @@ String getHumanReadableDateFromString(String timeStamp,
       return jmFormat.format(dateTime);
     } else {
       return (addWeekDay
-          ? '${formatterWeekMonthDayYr.format(dateTime)} '
-          : (dateTime.day == now.day &&
-          dateTime.month == now.month &&
-          dateTime.year == now.year)
-          ? 'Today'
-          : formatterMonthDayYr.format(dateTime)) +
+              ? '${formatterWeekMonthDayYr.format(dateTime)} '
+              : (dateTime.day == now.day &&
+                      dateTime.month == now.month &&
+                      dateTime.year == now.year)
+                  ? 'Today'
+                  : formatterMonthDayYr.format(dateTime)) +
           (addTimeOfDay ? ', ${DateFormat('Hm').format(dateTime)}' : '');
     }
   } catch (e) {
     return '';
   }
+}
+
+/// Parses a date string, handling date-only strings (YYYY-MM-DD) specially
+/// to avoid timezone issues where dates shift by one day.
+///
+/// Date-only strings like "2000-01-09" are parsed as local time.
+/// Full datetime strings are parsed normally and converted to local time.
+DateTime _parseDateString(String dateString) {
+  if (dateString.isEmpty) {
+    return DateTime.now();
+  }
+
+  // Check if it's a date-only string (YYYY-MM-DD format)
+  // Date-only strings don't have 'T' or time components
+  final isDateOnly = !dateString.contains('T') &&
+      !dateString.contains(' ') &&
+      RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(dateString);
+
+  if (isDateOnly) {
+    // Parse as local date to avoid timezone shift
+    final parts = dateString.split('-');
+    return DateTime(
+      int.parse(parts[0]), // year
+      int.parse(parts[1]), // month
+      int.parse(parts[2]), // day
+    );
+  }
+
+  // For full datetime strings, parse and convert to local
+  final parsed = DateTime.parse(dateString);
+  // If the parsed date is UTC, convert to local
+  return parsed.isUtc ? parsed.toLocal() : parsed;
 }
 
 String getErrorMsg(Map body) {
@@ -273,7 +304,7 @@ String getErrorMsg(Map body) {
   }
   if (finalErrorMsg.isEmpty) {
     finalErrorMsg =
-    body['meta'] != null ? body['meta']['message'] : errorUnknown;
+        body['meta'] != null ? body['meta']['message'] : errorUnknown;
   }
   logger.i(body);
   return finalErrorMsg;
@@ -285,9 +316,9 @@ final DateFormat formatterMonthDayYr = DateFormat('MMMM d, yyyy');
 
 String getHumanReadableDate(int timeStamp,
     {bool addWeekDay = false,
-      bool addTimeOfDay = false,
-      bool useTimeAgo = false,
-      bool isOnlyTimeOfDay = false}) {
+    bool addTimeOfDay = false,
+    bool useTimeAgo = false,
+    bool isOnlyTimeOfDay = false}) {
   final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp);
   final DateTime now = DateTime.now();
   if (useTimeAgo) {
@@ -307,10 +338,9 @@ String getHumanReadableDate(int timeStamp,
         (addWeekDay
             ? '${formatterWeekMonthDayYr.format(dateTime)} '
             : (dateTime.day == now.day &&
-            dateTime.month == now.month &&
-            dateTime.year == now.year)
-            ? 'Today'
-            : formatterMonthDayYr.format(dateTime));
+                    dateTime.month == now.month &&
+                    dateTime.year == now.year)
+                ? 'Today'
+                : formatterMonthDayYr.format(dateTime));
   }
 }
-

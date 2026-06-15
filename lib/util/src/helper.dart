@@ -57,15 +57,25 @@ logError(data, {StackTrace? stackTrace}) {
 }
 
 showErrorToast(String message) {
-  showToast(message,
-      backgroundColor: Colors.red,
-      duration: const Duration(milliseconds: 5000));
+  try {
+    showToast(message,
+        backgroundColor: Colors.red,
+        duration: const Duration(milliseconds: 5000));
+  } catch (_) {
+    // No toast context available (e.g. headless / widget tests) — degrade
+    // gracefully instead of throwing on the missing StyledToast context.
+    debugPrint('Toast (error): $message');
+  }
 }
 
 showSuccessToast(String message) {
-  showToast(message,
-      backgroundColor: Colors.green,
-      duration: const Duration(milliseconds: 5000));
+  try {
+    showToast(message,
+        backgroundColor: Colors.green,
+        duration: const Duration(milliseconds: 5000));
+  } catch (_) {
+    debugPrint('Toast (success): $message');
+  }
 }
 
 bool isValidEmail(String email) {
